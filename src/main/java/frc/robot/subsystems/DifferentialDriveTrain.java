@@ -25,10 +25,10 @@ public class DifferentialDriveTrain extends SubsystemBase {
   DifferentialDrive differentialDrive = null;
   /** Creates a new ExampleSubsystem. */
   public DifferentialDriveTrain() {
-    leftFrontMC = new CANSparkMax(4, MotorType.kBrushless);
-    leftRearMC = new CANSparkMax(5, MotorType.kBrushless);
-    rightFrontMC = new CANSparkMax(1, MotorType.kBrushless);
-    rightRearMC = new CANSparkMax(2, MotorType.kBrushless);
+    leftFrontMC = new CANSparkMax(2, MotorType.kBrushless);
+    leftRearMC = new CANSparkMax(1, MotorType.kBrushless);
+    rightFrontMC = new CANSparkMax(5, MotorType.kBrushless);
+    rightRearMC = new CANSparkMax(4, MotorType.kBrushless);
 
     leftMotors = new MotorControllerGroup(leftFrontMC, leftRearMC);
     rightMotors = new MotorControllerGroup(rightFrontMC, rightRearMC);
