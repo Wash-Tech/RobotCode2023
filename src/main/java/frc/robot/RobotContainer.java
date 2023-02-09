@@ -29,7 +29,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public static final DifferentialDriveTrain m_DifferentialDriveTrain = new DifferentialDriveTrain();
-  public final Piston m_Piston = new Piston();
+  public static final Piston m_Piston = new Piston();
   public static final XboxController m_driverController = new XboxController(0);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed

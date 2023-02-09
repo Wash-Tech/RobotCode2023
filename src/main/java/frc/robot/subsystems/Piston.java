@@ -13,7 +13,7 @@ public class Piston extends SubsystemBase {
   Solenoid pitchSolenoid = null;
   /** Creates a new Piston. */
   public Piston() {
-    pitchSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
+    pitchSolenoid = new Solenoid(0,PneumaticsModuleType.CTREPCM, 0);
   }
 
   public void pitchPiston(){
