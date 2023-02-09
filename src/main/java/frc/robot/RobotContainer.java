@@ -5,14 +5,19 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.event.EventLoop;
+import edu.wpi.first.wpilibj.event.BooleanEvent;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Robot;
+import frc.robot.subsystems.Piston;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,17 +28,18 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  public static final XboxController driverController = new XboxController(0);
   public static final DifferentialDriveTrain m_DifferentialDriveTrain = new DifferentialDriveTrain();
+  public final Piston m_Piston = new Piston();
+  public static final XboxController m_driverController = new XboxController(0);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  //private final CommandXboxController m_driverController =
+      //new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    //configureButtonBindings();
+    configureBindings();
     m_DifferentialDriveTrain.setDefaultCommand(new DriveArcade());
   }
 
@@ -46,21 +52,18 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  /*
-   * private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+
+  private void configureBindings() {
+    Trigger rightBumperButton = new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value);
+    rightBumperButton.whileTrue(new ShootPiston());
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
-   * 
-   */
   
   public XboxController getdriverController() {
-    return driverController;
+    return m_driverController;
   }
 
   /**
