@@ -4,12 +4,16 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
+import frc.robot.subsystems.Piston;
 
 public class ShootPiston extends CommandBase {
   /** Creates a new ShootPiston. */
   public ShootPiston() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(Robot.m_Piston);
   }
 
   // Called when the command is initially scheduled.
@@ -18,7 +22,9 @@ public class ShootPiston extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    Robot.m_Piston.pitchPiston();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -27,6 +33,6 @@ public class ShootPiston extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
