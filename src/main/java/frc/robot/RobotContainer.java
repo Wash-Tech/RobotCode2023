@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.event.BooleanEvent;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Robot;
 import frc.robot.subsystems.Piston;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Shoulder;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,6 +32,8 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public static final DifferentialDriveTrain m_DifferentialDriveTrain = new DifferentialDriveTrain();
   public static final Piston m_Piston = new Piston();
+  public static final Arm m_arm = new Arm();
+  public static final Shoulder m_shoulder = new Shoulder();
   public static final XboxController m_driverController = new XboxController(0);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -56,6 +60,18 @@ public class RobotContainer {
   private void configureBindings() {
     Trigger rightBumperButton = new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value);
     rightBumperButton.whileTrue(new ShootPiston());
+
+    Trigger aButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);
+    aButton.whileTrue(new ExtendArm(m_arm));
+
+    Trigger bButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
+    bButton.whileTrue(new RotateShoulder(m_shoulder));
+
+    Trigger yButton = new JoystickButton(m_driverController, XboxController.Button.kY.value);
+    yButton.whileTrue(new ReverseRotateShoulder(m_shoulder));
+
+    Trigger xButton = new JoystickButton(m_driverController, XboxController.Button.kX.value);
+    xButton.whileTrue(new ReverseExtendArm(m_arm));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.

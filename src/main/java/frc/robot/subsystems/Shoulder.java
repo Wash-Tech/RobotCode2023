@@ -9,12 +9,12 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class Arm extends SubsystemBase {
+public class Shoulder extends SubsystemBase {
   /** Creates a new Arm. */
-  private CANSparkMax armExtender;
+  private CANSparkMax shoulderExtender;
 
-  public Arm() {
-    armExtender = new CANSparkMax(7, MotorType.kBrushless);
+  public Shoulder() {
+    shoulderExtender = new CANSparkMax(8, MotorType.kBrushed);
   }
 
   @Override
@@ -22,6 +22,6 @@ public class Arm extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   public void spin(double speed) {
-    armExtender.set(speed);
+    shoulderExtender.set(speed);
 }
 }
