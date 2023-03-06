@@ -21,7 +21,11 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+  /**
+   * extends/retracts the arm based on the speed value
+   * @param speed number value that is given by the ExtendArm & ReverseExtendArm command
+   */  
   public void spin(double speed) {
     armExtender.set(speed);
-}
+  }
 }

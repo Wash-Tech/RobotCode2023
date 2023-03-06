@@ -21,7 +21,12 @@ public class Shoulder extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  /**
+   * rotate the shoulder with the given speed
+   * @param speed the value given by the RotateShoulder & ReverseRotateSoulder command
+   */
   public void spin(double speed) {
     shoulderExtender.set(speed);
-}
+  }
 }

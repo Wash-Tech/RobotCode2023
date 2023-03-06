@@ -12,10 +12,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.event.EventLoop;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.event.BooleanEvent;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.subsystems.Piston;
 import frc.robot.subsystems.Arm;
@@ -29,12 +36,15 @@ import frc.robot.subsystems.Shoulder;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  //private static final PneumaticHub ph = new PneumaticHub();
+  private static final Compressor pcmCompressor = new Compressor(1,PneumaticsModuleType.CTREPCM);
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public static final DifferentialDriveTrain m_DifferentialDriveTrain = new DifferentialDriveTrain();
   public static final Piston m_Piston = new Piston();
   public static final Arm m_arm = new Arm();
   public static final Shoulder m_shoulder = new Shoulder();
   public static final XboxController m_driverController = new XboxController(0);
+  public static final SendableChooser<Command> m_choosing = new SendableChooser<>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   //private final CommandXboxController m_driverController =
@@ -43,8 +53,15 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+    CameraServer.startAutomaticCapture();
+    pcmCompressor.enableDigital();
     configureBindings();
     m_DifferentialDriveTrain.setDefaultCommand(new DriveArcade());
+    m_choosing.setDefaultOption("Middle", new SequentialCommandGroup(
+      new DriveArcadeAutonomous().withTimeout(4)
+    ));
+    Shuffleboard.getTab("Autonomous 1").add(m_choosing);
+    //ph.enableCompressorAnalog(60, 110);
   }
 
   /**
@@ -89,6 +106,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return m_choosing.getSelected();
+    //return Autos.exampleAuto(m_exampleSubsystem);
   }
 }

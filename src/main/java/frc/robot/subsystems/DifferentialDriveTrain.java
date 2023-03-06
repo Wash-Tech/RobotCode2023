@@ -31,6 +31,7 @@ public class DifferentialDriveTrain extends SubsystemBase {
     rightRearMC = new CANSparkMax(4, MotorType.kBrushless);
 
     leftMotors = new MotorControllerGroup(leftFrontMC, leftRearMC);
+    leftMotors.setInverted(true);
     rightMotors = new MotorControllerGroup(rightFrontMC, rightRearMC);
 
     differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
