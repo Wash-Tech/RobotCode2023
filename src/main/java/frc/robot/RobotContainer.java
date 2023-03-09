@@ -52,13 +52,15 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
     // Configure the trigger bindings
     CameraServer.startAutomaticCapture();
     pcmCompressor.enableDigital();
     configureBindings();
     m_DifferentialDriveTrain.setDefaultCommand(new DriveArcade());
     m_choosing.setDefaultOption("Middle", new SequentialCommandGroup(
-      new DriveArcadeAutonomous().withTimeout(4)
+      //new DriveArcadeAutonomous().withTimeout(4)
+      new PIDDriveAuto(m_DifferentialDriveTrain).withTimeout(10)
     ));
     Shuffleboard.getTab("Autonomous 1").add(m_choosing);
     //ph.enableCompressorAnalog(60, 110);
