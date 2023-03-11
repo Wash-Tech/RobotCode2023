@@ -12,14 +12,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /** An example command that uses an example subsystem. */
 public class DriveArcadeAutonomous extends CommandBase {
 
+  private DifferentialDriveTrain m_adrive;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveArcadeAutonomous() {
+  public DriveArcadeAutonomous(DifferentialDriveTrain adrive) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_DifferentialDriveTrain);
+    m_adrive = adrive;
+    addRequirements(m_adrive);
   }
 
   // Called when the command is initially scheduled.
@@ -29,13 +32,13 @@ public class DriveArcadeAutonomous extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_DifferentialDriveTrain.arcadeDrive(-0.5, 0);
+    m_adrive.arcadeDrive(-0.5, 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_DifferentialDriveTrain.arcadeDrive(0, 0);
+    m_adrive.arcadeDrive(0, 0);
   }
 
   // Returns true when the command should end.

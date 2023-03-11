@@ -39,7 +39,7 @@ public class RobotContainer {
   //private static final PneumaticHub ph = new PneumaticHub();
   private static final Compressor pcmCompressor = new Compressor(1,PneumaticsModuleType.CTREPCM);
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  public static final DifferentialDriveTrain m_DifferentialDriveTrain = new DifferentialDriveTrain();
+  public final DifferentialDriveTrain m_DifferentialDriveTrain = new DifferentialDriveTrain();
   public static final Piston m_Piston = new Piston();
   public static final Arm m_arm = new Arm();
   public static final Shoulder m_shoulder = new Shoulder();
@@ -57,7 +57,7 @@ public class RobotContainer {
     CameraServer.startAutomaticCapture();
     pcmCompressor.enableDigital();
     configureBindings();
-    m_DifferentialDriveTrain.setDefaultCommand(new DriveArcade());
+    m_DifferentialDriveTrain.setDefaultCommand(new DriveArcade(m_DifferentialDriveTrain,m_driverController));
     m_choosing.setDefaultOption("Middle", new SequentialCommandGroup(
       //new DriveArcadeAutonomous().withTimeout(4)
       new PIDDriveAuto(m_DifferentialDriveTrain).withTimeout(10)
@@ -90,7 +90,10 @@ public class RobotContainer {
     yButton.whileTrue(new ReverseRotateShoulder(m_shoulder));
 
     Trigger xButton = new JoystickButton(m_driverController, XboxController.Button.kX.value);
-    xButton.whileTrue(new ReverseExtendArm(m_arm));
+    //xButton.whileTrue(new ReverseExtendArm(m_arm));
+
+    //xbutton auto tester
+    xButton.whileTrue(new PIDDriveAuto(m_DifferentialDriveTrain));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.

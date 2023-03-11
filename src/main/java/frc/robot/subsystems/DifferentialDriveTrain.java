@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import com.revrobotics.RelativeEncoder;
@@ -26,7 +28,7 @@ public class DifferentialDriveTrain extends SubsystemBase {
   MotorControllerGroup leftMotors = null;
   MotorControllerGroup rightMotors = null;
 
-  DifferentialDrive differentialDrive = null;
+  public DifferentialDrive differentialDrive = null;
 
   public SparkMaxPIDController m_pidleftFront;
   public SparkMaxPIDController m_pidleftRear;
@@ -68,6 +70,9 @@ public class DifferentialDriveTrain extends SubsystemBase {
     rightMotors = new MotorControllerGroup(rightFrontMC, rightRearMC);
 
     differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
+    //atempt to lengthen watchdog timer for differential drive
+    differentialDrive.setExpiration(.1);
+
 
     // PID coefficients
     kP = 0.1; 
@@ -75,8 +80,8 @@ public class DifferentialDriveTrain extends SubsystemBase {
     kD = 1; 
     kIz = 0; 
     kFF = 0; 
-    kMaxOutput = 1; 
-    kMinOutput = -1;
+    kMaxOutput = 0.8; 
+    kMinOutput = -0.8;
 
     // set PID coefficients
     m_pidleftFront.setP(kP);
@@ -93,6 +98,16 @@ public class DifferentialDriveTrain extends SubsystemBase {
     m_pidrightFront.setFF(kFF);
     m_pidrightFront.setOutputRange(kMinOutput, kMaxOutput);
 
+  
+    SmartDashboard.putNumber("P Gain", kP);
+    SmartDashboard.putNumber("I Gain", kI);
+    SmartDashboard.putNumber("D Gain", kD);
+    SmartDashboard.putNumber("I Zone", kIz);
+    SmartDashboard.putNumber("Feed Forward", kFF);
+    SmartDashboard.putNumber("Max Output", kMaxOutput);
+    SmartDashboard.putNumber("Min Output", kMinOutput);
+    SmartDashboard.putNumber("Set Rotations", 0);
+  
   }
 
   public void arcadeDrive(double moveSpeed, double rotateSpeed) {
@@ -128,15 +143,31 @@ public class DifferentialDriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("P Gain", kP);
-    SmartDashboard.putNumber("I Gain", kI);
-    SmartDashboard.putNumber("D Gain", kD);
-    SmartDashboard.putNumber("I Zone", kIz);
-    SmartDashboard.putNumber("Feed Forward", kFF);
-    SmartDashboard.putNumber("Max Output", kMaxOutput);
-    SmartDashboard.putNumber("Min Output", kMinOutput);
-    SmartDashboard.putNumber("Set Rotations", 0);
+    SmartDashboard.putNumber("LeftDriveEncoder", m_encoderleftFront.getPosition());
+    SmartDashboard.putNumber("RightDriveEncoder", m_encoderrightFront.getPosition());
 
+    double P = SmartDashboard.getNumber("P Gain", kP);
+    //System.out.println(P);
+    if (P != kP) {
+      m_pidleftFront.setP(P);
+      m_pidrightFront.setP(P);
+      kP = P;
+    }
+
+    double D = SmartDashboard.getNumber("D Gain", kD);
+    if (D !=kD) {
+      m_pidleftFront.setD(D);
+      m_pidrightFront.setD(D);
+      kD = D;
+    }
+
+    double I = SmartDashboard.getNumber("I Gain", kI);
+    if (I != kI) {
+      m_pidleftFront.setI(I);
+      m_pidrightFront.setI(I);
+      kI = I;
+    }
+  
   }
 
   @Override
