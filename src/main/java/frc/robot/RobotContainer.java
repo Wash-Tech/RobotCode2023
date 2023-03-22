@@ -27,6 +27,9 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Piston;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Shoulder;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -94,6 +97,9 @@ public class RobotContainer {
 
     //xbutton auto tester
     xButton.whileTrue(new PIDDriveAuto(m_DifferentialDriveTrain));
+
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    table.getEntry("pipeline").setNumber(1);
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.

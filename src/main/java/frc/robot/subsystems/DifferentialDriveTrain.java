@@ -38,19 +38,18 @@ public class DifferentialDriveTrain extends SubsystemBase {
   public RelativeEncoder m_encoderleftRear;
   public RelativeEncoder m_encoderrightFront;
   public RelativeEncoder m_encoderrightRear;
-
+  
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
   /** Creates a new ExampleSubsystem. */
   public DifferentialDriveTrain() {
     leftFrontMC = new CANSparkMax(2, MotorType.kBrushless);
-    leftRearMC = new CANSparkMax(1, MotorType.kBrushless);
+    leftRearMC = new CANSparkMax(3, MotorType.kBrushless);
     rightFrontMC = new CANSparkMax(5, MotorType.kBrushless);
     rightRearMC = new CANSparkMax(4, MotorType.kBrushless);
 
     leftRearMC.follow(leftFrontMC);
     rightRearMC.follow(rightFrontMC);
-
     leftFrontMC.setInverted(true);
     leftRearMC.setInverted(true);
 
@@ -80,8 +79,8 @@ public class DifferentialDriveTrain extends SubsystemBase {
     kD = 1; 
     kIz = 0; 
     kFF = 0; 
-    kMaxOutput = 0.8; 
-    kMinOutput = -0.8;
+    kMaxOutput = 0.5; 
+    kMinOutput = -0.5;
 
     // set PID coefficients
     m_pidleftFront.setP(kP);

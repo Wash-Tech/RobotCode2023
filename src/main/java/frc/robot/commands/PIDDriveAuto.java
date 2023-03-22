@@ -27,15 +27,20 @@ public class PIDDriveAuto extends CommandBase {
     m_autoDrive.differentialDrive.setSafetyEnabled(false);
     m_autoDrive.m_encoderleftFront.setPosition(0);
     m_autoDrive.m_encoderrightFront.setPosition(0);
-    
 
-    m_autoDrive.m_pidleftFront.setReference(100, CANSparkMax.ControlType.kPosition);
-    m_autoDrive.m_pidrightFront.setReference(100,CANSparkMax.ControlType.kPosition);
+    double setpoint = -100;
+    
+    //PIDslot 0 is distance PID, 1 will be Velocity PID
+    m_autoDrive.m_pidleftFront.setReference(setpoint, CANSparkMax.ControlType.kPosition, 0);
+    m_autoDrive.m_pidrightFront.setReference(setpoint,CANSparkMax.ControlType.kPosition, 0);
+
+    System.out.println("Pid set. Target: " + setpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("Pid driving");
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +48,8 @@ public class PIDDriveAuto extends CommandBase {
   public void end(boolean interrupted) {
     m_autoDrive.differentialDrive.setSafetyEnabled(true);
     m_autoDrive.arcadeDrive(0, 0);
+
+    System.out.println("Pid fiished");
   }
 
   // Returns true when the command should end.
